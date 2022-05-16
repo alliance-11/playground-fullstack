@@ -1,4 +1,8 @@
-@API_URL = "http://localhost:5000"
+@APIURL = http://localhost:5000
 
-GET {{API_URL}}/books
+### Home
+GET http://localhost:5000/books
+
+### Books
+GET {{APIURL}}/books
 
