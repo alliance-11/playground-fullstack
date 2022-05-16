@@ -1,7 +1,7 @@
 const dotenv = require("dotenv")
 const express = require("express")
 const { connectDb } = require("./db-connect")
-const User = require("./models/User")
+const usersRouter = require("./routes/users.router")
 
 const env = dotenv.config() // load ENVIRONMENT first!
 console.log("Loaded environment config: ", env)
@@ -9,6 +9,9 @@ console.log("Loaded environment config: ", env)
 connectDb() // now connect to database (using connection string in environment)
 
 const app = express()
+
+// Türsteher => JSON Parser => parses incoming JSON DATA
+app.use( express.json() )
 
 app.get("/", (req, res) => {
   res.send(`
@@ -20,11 +23,6 @@ app.get("/", (req, res) => {
   `)
 })
 
-app.get("/users", async (req, res) => {
-  const usersAll = await User.find()
-  res.json( usersAll )
-})
-
 app.get("/books", (req, res) => {
   res.json([
     { _id: "b1", title: "Name of the Wind", author: "Jadon Sanderson"},
@@ -32,6 +30,9 @@ app.get("/books", (req, res) => {
     { _id: "b3", title: "Das Glasperlenspiel", author: "Hermann Hesse"}
   ])
 })
+
+// ROUTES
+app.use("/users", usersRouter) // hook in the users router at path /users
 
 // handle non existing routes
 app.use((req, res, next) => {

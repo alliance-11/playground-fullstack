@@ -6,5 +6,15 @@ GET {{API_URL}}
 ### Books
 GET {{API_URL}}/books
 
-### Users
+### Users All
 GET {{API_URL}}/users
+
+### User CREATE
+POST {{API_URL}}/users
+Content-Type: application/json
+
+{
+  "name": "Edward",
+  "email": "ed@ed.com",
+  "password": "ed123"
+}
