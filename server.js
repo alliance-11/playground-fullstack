@@ -1,6 +1,7 @@
 const dotenv = require("dotenv")
 const express = require("express")
 const { connectDb } = require("./db-connect")
+const User = require("./models/User")
 
 const env = dotenv.config() // load ENVIRONMENT first!
 console.log("Loaded environment config: ", env)
@@ -15,7 +16,13 @@ app.get("/", (req, res) => {
     <div>Our routes:<div>
     <div>Home: <a href="/">/</a></div>
     <div>Books: <a href="/books">/books</a></div>
+    <div>Users: <a href="/users">/users</a></div>
   `)
+})
+
+app.get("/users", async (req, res) => {
+  const usersAll = await User.find()
+  res.json( usersAll )
 })
 
 app.get("/books", (req, res) => {

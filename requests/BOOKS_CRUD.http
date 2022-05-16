@@ -6,3 +6,5 @@ GET {{API_URL}}
 ### Books
 GET {{API_URL}}/books
 
+### Users
+GET {{API_URL}}/users
