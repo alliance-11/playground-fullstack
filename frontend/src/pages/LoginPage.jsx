@@ -37,8 +37,9 @@ const LoginPage = () => {
       method: "POST",
       body: JSON.stringify(userLogin), // convert JS object to JSON string,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json",        
       },
+      credentials: 'include'
     })
 
     // parse response BODY
