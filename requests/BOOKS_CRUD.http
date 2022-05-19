@@ -9,14 +9,14 @@ GET {{API_URL}}/books
 ### Users All
 GET {{API_URL}}/users
 
-### User CREATE
+### User CREATE / SIGNUP
 POST {{API_URL}}/users
 Content-Type: application/json
 
 {
-  "name": "Helene",
-  "email": "hel@hel.com",
-  "password": "helene123"
+  "name": "Heba",
+  "email": "heba@heba.com",
+  "password": "heba123"
 }
 
 ### User LOGIN
@@ -24,6 +24,6 @@ POST {{API_URL}}/users/login
 Content-Type: application/json
 
 {
-  "email": "eliza@eliza.com",
-  "password": "eliza123"
+  "email": "heba@heba.com",
+  "password": "heba123"
 }

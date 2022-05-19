@@ -1,5 +1,6 @@
 const dotenv = require("dotenv")
 const express = require("express")
+const cors = require("cors")
 const { connectDb } = require("./db-connect")
 const usersRouter = require("./routes/users.router")
 
@@ -11,6 +12,7 @@ connectDb() // now connect to database (using connection string in environment)
 const app = express()
 
 // Türsteher => JSON Parser => parses incoming JSON DATA
+app.use( cors() ) // allow access
 app.use( express.json() )
 
 app.get("/", (req, res) => {
