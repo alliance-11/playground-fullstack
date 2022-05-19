@@ -16,7 +16,7 @@ usersRouter.post("/", async (req, res) => {
 
   const { email } = req.body
 
-  console.log(email)
+  console.log( "Signup request: ", req.body )
 
   // forward data parsed by TÜRSTEHER (express.json middleware)
   // to database!
