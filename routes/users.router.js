@@ -10,6 +10,19 @@ usersRouter.get("/", async (req, res) => {
   res.json(usersAll)
 })
 
+// GET /users/me
+// just one purpose => check if I am still logged in
+usersRouter.get("/me", (req, res) => {
+  if(!req.session.user) {
+    return res.status(401).json({
+      error: "You are not logged in"
+    })
+  }
+
+  // on success: send te stored user info!
+  res.json( req.session.user )
+})
+
 // POST /users
 // create / signup new user
 usersRouter.post("/", async (req, res) => {
@@ -33,6 +46,23 @@ usersRouter.post("/", async (req, res) => {
   res.json( userNew )
 })
 
+// just destroy the session associated with the given cookie
+// important to call /logout from the frontend with the COOKIE
+// => frontend fetch => credentials: "include"
+usersRouter.get("/logout", (req, res) => {
+
+  // destroy all saved info from the user
+  // (= logout)
+  // destroy will call a callback once finished
+  // in the callback we send the response
+  req.session.destroy((err) => {
+    res.json({
+      message: "Logged you out successfully"
+    })
+  })
+
+})
+
 // POST /users/login
 // login a user
 usersRouter.post("/login", async (req, res) => {
@@ -52,6 +82,10 @@ usersRouter.post("/login", async (req, res) => {
     return res.status(400).json({
       error: "User does not exist! Try with other email / password. Typo?"
     })
+
+  // perform LOGIN by creating a session
+  // at the same time the COOKIE will get created and ATTACHED to the response!
+  req.session.user = userFound
 
   // user exists! respond with found user
   res.json( userFound )

@@ -39,6 +39,8 @@ const LoginPage = () => {
       headers: {
         "Content-Type": "application/json",        
       },
+      // 1. STORE cookies we receive from backend => in browser
+      // 2. SEND cookies we HAVE to backend
       credentials: 'include'
     })
 

@@ -9,6 +9,9 @@ GET {{API_URL}}/books
 ### Users All
 GET {{API_URL}}/users
 
+#### Check if I am stil logged in and give me my user info
+GET {{API_URL}}/users/me
+
 ### User CREATE / SIGNUP
 POST {{API_URL}}/users
 Content-Type: application/json
@@ -27,3 +30,6 @@ Content-Type: application/json
   "email": "heba@heba.com",
   "password": "heba123"
 }
+
+### User LOGOUT
+GET {{API_URL}}/users/logout

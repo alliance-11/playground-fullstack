@@ -5,20 +5,24 @@ const { connectDb } = require("./db-connect")
 const usersRouter = require("./routes/users.router")
 const session = require("express-session")
 
-const env = dotenv.config() // load ENVIRONMENT first!
+// load ENVIRONMENT first!
+const env = dotenv.config() 
 console.log("Loaded environment config: ", env)
 
 connectDb() // now connect to database (using connection string in environment)
 
 const app = express()
 
+
+// allow ONLY THIS GIVEN frontend access to us + getting cookies from there
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true })) // allow access from ANY frontend ANY DOMAIN
+
 // Türsteher => JSON Parser => parses incoming JSON DATA
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true })) // allow access
 app.use( express.json() )
 app.use( session({
   secret: "holySecret",
   proxy: true, // needed later for heroku deployment
-  saveUninitialized: true, // saveUnitialized: true => create cookie on each request! 
+  saveUninitialized: false, // saveUnitialized: true => create cookie on each request! 
   resave: false, // do not resave session on each request if there were no changes
   cookie: {
     httpOnly: true, // just allow browser to read cookis, but javascript cannot read cookie in browser!
@@ -40,7 +44,29 @@ app.get("/", (req, res) => {
   `)
 })
 
-app.get("/books", (req, res) => {
+// TÜRSTEHER => security guard
+
+// req => request => cookie & session & params
+// res => for sending a response
+// next => next is used to FORWARD a user to the route he / she wants to access
+// if we do not call next => the user will get stuck / rejected
+const auth = (req, res, next) => {
+  console.log("SESSION:", req.session.user)
+
+  // if no session => REJECT call (terminate request)
+  if (!req.session.user) {
+    return res.status(401).json({
+      error:
+        "[OUCH] Dios mio! You have no rights to be here whatsover! Buy a ticket please!",
+    })
+  }
+
+  // user has a ticket! => allow user to move forward to route!
+  next()
+}
+
+
+app.get("/books", auth, (req, res) => {
   res.json([
     { _id: "b1", title: "Name of the Wind", author: "Jadon Sanderson"},
     { _id: "b2", title: "Die Verwandlung", author: "Franz Kafka"},
