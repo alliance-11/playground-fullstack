@@ -1,7 +1,12 @@
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { loginApi } from "../helpers/apiCalls"
 
-const API_URL = "http://localhost:5000"
+// CRA way of loading env
+// const API_URL = process.env.REACT_APP_API_URL
+const API_URL = import.meta.env.VITE_API_URL //"http://localhost:5000"
+
+console.log( API_URL )
 
 const LoginPage = () => {
 
@@ -24,31 +29,11 @@ const LoginPage = () => {
 
     console.log("Submitted")
 
-    // prepare Login OBJECT => with all data
-    const userLogin = {
-      email: emailRef.current.value,
-      password: pwRef.current.value,
-    }
-
-    console.log(userLogin)
-
     // make LOGIN call to frntend
-    const response = await fetch(`${API_URL}/users/login`, {
-      method: "POST",
-      body: JSON.stringify(userLogin), // convert JS object to JSON string,
-      headers: {
-        "Content-Type": "application/json",        
-      },
-      // 1. STORE cookies we receive from backend => in browser
-      // 2. SEND cookies we HAVE to backend
-      credentials: 'include'
-    })
-
-    // parse response BODY
-    const result = await response.json()
+    const result = await loginApi(emailRef.current.value, pwRef.current.value)
 
     // ERROR => login not successful!
-    if(response.status !== 200) {
+    if(result.error) {
       return setErrors(result.error)
     }
 

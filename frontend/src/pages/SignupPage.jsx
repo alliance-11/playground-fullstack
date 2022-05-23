@@ -1,6 +1,7 @@
 import { useRef } from "react"
+import { useNavigate, } from "react-router-dom"
+import { signupApi } from "../helpers/apiCalls"
 
-const API_URL = "http://localhost:5000"
 
 const SignupPage = () => {
 
@@ -8,41 +9,24 @@ const SignupPage = () => {
   const emailRef = useRef()
   const pwRef = useRef()
 
+  const navigate = useNavigate()
+
+  // collect data
+  // forward data to API function
   const onSignupSubmit = async (e) => {
 
     e.preventDefault() // stop browser from forwarding me to other page
 
-    console.log("Submitted")
+    // forward data to API function
+    const result = await signupApi(nameRef.current.value, emailRef.current.value, pwRef.current.value)
 
-    // prepare signup OBJECT => with all data
-    const userSignup = {
-      name: nameRef.current.value,
-      email: emailRef.current.value,
-      password: pwRef.current.value,
+    // error on signup?
+    if(result.error) {
+      return console.log(result.error)
     }
 
-    console.log(userSignup)
-
-    const response = await fetch(`${API_URL}/users`, {
-      method: "POST",
-      body: JSON.stringify(userSignup), // convert JS object to JSON string,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-
-    const userNewApi = await response.json()
-
-    console.log( userNewApi )
-
-
-    // POST {{API_URL}}/users
-    // Content-Type: application/json
-    // {
-    //   "name": "Heba",
-    //   "email": "heba@heba.com",
-    //   "password": "heba123"
-    // }
+    // signup worked => forward me!
+    navigate("/")
   }
 
   return (
