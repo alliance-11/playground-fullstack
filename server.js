@@ -29,10 +29,15 @@ app.use(
     cookie: {
       httpOnly: true, // just allow browser to read cookis, but javascript cannot read cookie in browser!
       maxAge: 1000 * 60 * 60 * 24, // 1000 ms * 60 => 1 m * 60 => 1 h
-      sameSite: "lax",
-      secure: false,
-      // sameSite: 'none',
-      // secure: true
+
+      // settings for DEPLOYMENT! 
+      // => on deployed webpages we use HTTPS / encrypted sending of all responses
+      // therefore we also need to mark cookies as SECURE (=> the browser will only accept "secure" cookies over HTTP)
+      secure: process.env.NODE_ENV === "production",
+      // sameSite => once deployed, frontend and backend will run on DIFFERENT domains. 
+      // If both would run on the same domain we would call this "sameSite"
+      // but due they do not run on the same: in production  we must tell the browser to allow non same-site cookies
+      sameSite: process.env_NODE_ENV === "production" ? "none": "lax",
     },
   })
 )
