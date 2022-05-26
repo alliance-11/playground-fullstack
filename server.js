@@ -37,7 +37,7 @@ app.use(
       // sameSite => once deployed, frontend and backend will run on DIFFERENT domains. 
       // If both would run on the same domain we would call this "sameSite"
       // but due they do not run on the same: in production  we must tell the browser to allow non same-site cookies
-      sameSite: process.env_NODE_ENV === "production" ? "none": "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none": "lax",
     },
   })
 )
