@@ -55,7 +55,15 @@ usersRouter.get("/logout", (req, res) => {
   // (= logout)
   // destroy will call a callback once finished
   // in the callback we send the response
+
+
+  // lock zimmer => not accessible anymore
   req.session.destroy((err) => {
+
+    // take away key from user
+    res.clearCookie("connect.sid")
+
+    // send response
     res.json({
       message: "Logged you out successfully"
     })

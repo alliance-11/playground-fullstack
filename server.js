@@ -19,20 +19,23 @@ app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true })) // all
 
 // Türsteher => JSON Parser => parses incoming JSON DATA
 app.use( express.json() )
-app.use( session({
-  secret: "holySecret",
-  proxy: true, // needed later for heroku deployment
-  saveUninitialized: false, // saveUnitialized: true => create cookie on each request! 
-  resave: false, // do not resave session on each request if there were no changes
-  cookie: {
-    httpOnly: true, // just allow browser to read cookis, but javascript cannot read cookie in browser!
-    maxAge: 1000*60*60*24, // 1000 ms * 60 => 1 m * 60 => 1 h 
-    sameSite: 'lax',
-    secure: false
-    // sameSite: 'none',
-    // secure: true
-  }
-}) )
+app.use(
+  session({
+    // name: "eliza.id" => name for cookie can be set with "name"
+    secret: "holySecret",
+    proxy: true, // needed later for heroku deployment
+    saveUninitialized: false, // saveUnitialized: true => create cookie on each request!
+    resave: false, // do not resave session on each request if there were no changes
+    cookie: {
+      httpOnly: true, // just allow browser to read cookis, but javascript cannot read cookie in browser!
+      maxAge: 1000 * 60 * 60 * 24, // 1000 ms * 60 => 1 m * 60 => 1 h
+      sameSite: "lax",
+      secure: false,
+      // sameSite: 'none',
+      // secure: true
+    },
+  })
+)
 
 app.get("/", (req, res) => {
   res.send(`

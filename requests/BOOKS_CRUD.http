@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
   "email": "heba@heba.com",
-  "password": "heba12"
+  "password": "heba123"
 }
 
 ### User LOGOUT
