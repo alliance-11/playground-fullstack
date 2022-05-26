@@ -1,5 +1,6 @@
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useDataContext } from "../contexts/DataProvider"
 import { loginApi } from "../helpers/apiCalls"
 
 // CRA way of loading env
@@ -10,13 +11,10 @@ console.log( API_URL )
 
 const LoginPage = () => {
 
-  // STATES
-
-  // errors STATE
-  const [errors, setErrors] = useState("")
+  // user & errors state
+  const { setUser, setErrors } = useDataContext()
 
   // form STATE
-  const nameRef = useRef()
   const emailRef = useRef()
   const pwRef = useRef()
 
@@ -40,6 +38,7 @@ const LoginPage = () => {
     // ON SUCCESSFUL LOGIN
     console.log(result)
     setErrors("") // clear error message
+    setUser( result) // store received / logged in user in context user state => so frontend knows we are logged in
 
     // REDIRECT to dashboard page (route "dashboard")
     navigate("/dashboard", { replace: true })
@@ -55,9 +54,6 @@ const LoginPage = () => {
       </div>
       <div>
         <button type="submit">Login</button>
-      </div>
-      <div className="errors" style={{ color: 'red', fontWeight: "bold" }}>
-        { errors }
       </div>
     </form>
   )
